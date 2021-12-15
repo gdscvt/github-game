@@ -1,8 +1,8 @@
 const [KEY_W, KEY_A, KEY_D, KEY_S, KEY_M, KEY_P, KEY_SPACE] = [
   87, 65, 68, 83, 77, 80,
 ];
-const [DOWN, UP, LEFT, RIGHT] = [0, 1, 2, 3];
-const [down, up, left, right] = ["down", "up", "left", "right"];
+const [UP, DOWN, LEFT, RIGHT] = [0, 1, 2, 3];
+const [up, down, left, right] = ["up", "down", "left", "right"];
 const dirString = [up, down, left, right];
 
 class Player {
