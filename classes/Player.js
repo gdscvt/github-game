@@ -18,7 +18,7 @@ class Player {
   }
 
   draw() {
-    this.onKeyPressed();
+    // this.onKeyPressed();
     image(
       this.sprite[dirString[this.currAnimation]][animIndex],
       this.x,
