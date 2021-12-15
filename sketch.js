@@ -16,7 +16,7 @@ function setup() {
 function draw() {
   background(220);
   index = floor(index)%frameSize;
-  image(playerCapture['up'][index], 100, y, 32, 32)  ;
+  image(playerCapture['left'][index], 100, y, 32, 32)  ;
   if(frameCount - currFrameCount > 10)
     {
       y++
