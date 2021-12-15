@@ -27,6 +27,7 @@ function draw() {
   if(computerToggle){
     computer.draw();
     computer.coding();
+    animIndex = 1;
   }
   else{
     player.onKeyPressed();
@@ -63,7 +64,7 @@ function keyReleased(){
     else if(keyCode == (80)){
       computer.code += 'p'; 
     }
-  else if(keyCode == (85)){
+    else if(keyCode == (85)){
       computer.code += 'u'; 
     }
     else if(keyCode == (76)){
