@@ -1,25 +1,22 @@
-let playerCapture = {};
-let playerSprite;
-let currFrameCount = 0;
-let frameSize = 6;
-let y = 100;
-function preload(){
-  playerSprite = loadImage('/resources/playerSprites.png');
+const [canvasWidth, canvasHeight] = [1000, 400];
+let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
+let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
+
+function preload() {
+  playerSprite = loadImage("/resources/playerSprites.png");
 }
-let index;
+
 function setup() {
   captureAllAnimation();
-  createCanvas(400, 400);
-  index = 0;
+  createCanvas(canvasWidth, canvasHeight);
+  player = new Player(playerCapture, 50, 50, 6);
 }
 
 function draw() {
   background(220);
-  index = floor(index)%frameSize;
-  image(playerCapture['left'][index], 100, y, 32, 32)  ;
-  if(frameCount - currFrameCount > 10)
-    {
-      y++
-      index++;
-    currFrameCount = frameCount;}
+  player.draw();
+  if (frameCount - currFrameCount > 10) {
+    animIndex = floor(animIndex + 1) % frameSize;
+    currFrameCount = frameCount;
+  }
 }
