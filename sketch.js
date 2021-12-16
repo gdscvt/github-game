@@ -29,6 +29,7 @@ function draw() {
   if (computerToggle) {
     computer.draw();
     computer.coding();
+    computer.onKeyPressed();
     animIndex = 1;
   } else {
     player.onKeyPressed();

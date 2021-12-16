@@ -2,6 +2,9 @@ class Computer {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.scrollX = x + 50;
+    this.scrollY = y + 75;
+    this.scrollSpeed = 1;
     this.code = "> ";
     this.display = "";
     this.terminal = undefined;
@@ -16,12 +19,30 @@ class Computer {
     fill(0);
     // Output Screen
     rect(this.x + 25, this.y + 50, 325, 225);
-    // Text entry Screen
-    rect(this.x + 25, this.y + 300, 325, 50);
 
     // Display of output
     fill(0, 255, 0);
-    text(this.display, this.x + 50, this.y + 75, 325, 200);
+    text(this.display, this.scrollX, this.scrollY, 325, 200); 
+
+    fill("#7A7A6C");
+    rect(this.x, this.y + 25, 375, 25);
+
+    fill("#7A7A6C");
+    rect(this.x, this.y + 275, 375, 25);
+
+    fill("#7A7A6C");
+    rect(this.x, this.y + 350, 375, 25);
+
+    fill(220);
+    rect(this.x, this.y + 375, 375, 25);
+
+    fill(220);
+    rect(this.x, this.y, 375, 25);
+
+    fill(0);
+    // Text entry Screen
+    rect(this.x + 25, this.y + 300, 325, 50);
+
     pop();
   }
 
@@ -33,5 +54,17 @@ class Computer {
     pop();
   }
 
-  onKeyPressed() {}
+  scrollUp(){
+      if(this.y + this.scrollY >= this.y + 50)
+        this.scrollY -= this.scrollSpeed;
+  }
+
+  scrollDown(){
+    this.scrollY += this.scrollSpeed;
+  }
+
+  onKeyPressed() {
+    if (keyIsDown(38)) computer.scrollUp();
+    else if (keyIsDown(40)) computer.scrollDown();
+  }
 }
