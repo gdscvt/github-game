@@ -11,7 +11,7 @@ class Terminal {
   }
 
   parse(c) {
-    computer.display = "";
+    computer.display += "\n" + c + '\n';
     let cmd = c.split(" ");
     console.log(cmd);
 
@@ -21,8 +21,8 @@ class Terminal {
         break;
       case "cd":
         if (cmd.length > 3)
-          computer.display =
-            "Error using cd, only supply one [args], and it must be a folder";
+          computer.display +=
+            "\nError using cd, only supply one [args], and it must be a folder";
         else this.cd(cmd[2]);
         break;
       case "ls":
@@ -33,14 +33,14 @@ class Terminal {
         break;
       case "cat":
         if (cmd.length > 3)
-          computer.display = "Error using cat, only supply one [args]";
+          computer.display += "\nError using cat, only supply one [args]";
         else this.cat(cmd[2]);
         break;
       case "exit":
         this.exit();
         break;
       default:
-        computer.display = "No such cmd found! :<";
+        computer.display += "\nNo such cmd found! :<";
         break;
     }
 
@@ -65,12 +65,12 @@ class Terminal {
   cat(file) {
     console.log(file);
     if (!file.includes(".")) {
-      computer.display = "Use cat on files, not directories!\n";
+      computer.display += "\nUse cat on files, not directories!\n";
       return;
     }
     this.currDir.forEach((curr) => {
       let currFileName = Object.keys(curr)[0];
-      if (currFileName === file) computer.display = curr[currFileName];
+      if (currFileName === file) computer.display += curr[currFileName];
     });
   }
 
