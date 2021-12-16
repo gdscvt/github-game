@@ -1,4 +1,4 @@
 [
-    {"files": [{"instructions.txt": "UP\nUP\nRIGHT\n"}],
+    {"files": [{"instructions.txt": "UP\nUP\nRIGHT\n"}, {"testing": [{"instructions2.txt":"RIGHT\n"}]}],
     "url": "https://somewhere.fake"}
 ]

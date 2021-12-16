@@ -2,9 +2,11 @@ const [canvasWidth, canvasHeight] = [1000, 400];
 let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
+let [level1] = [undefined];
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
+  level1 = loadJSON("./resources/terminalConfigs/level1.json");
 }
 
 function setup() {
@@ -12,6 +14,7 @@ function setup() {
   createCanvas(canvasWidth, canvasHeight);
   player = new Player(playerCapture, 50, 50, 6);
   computer = new Computer(600, 0);
+  computer.terminal = new Terminal(level1);
 }
 
 function draw() {
@@ -34,54 +37,20 @@ function draw() {
 
 // Only activated, if the key is released
 function keyReleased() {
-  if (!computerToggle && keyCode == 67) {
-    computerToggle = true;
+  let currKey;
+  if (keycodeMap[keyCode]) {
+    currKey = capitalize
+      ? keycodeMap[keyCode].toUpperCase()
+      : keycodeMap[keyCode];
   }
-  if (computerToggle) {
-    if (keyCode == 71) {
-      computer.code += "g";
-    } else if (keyCode == 69) {
-      computer.code += "e";
-    } else if (keyCode == 88) {
-      computer.code += "x";
-    } else if (keyCode == 69) {
-      computer.code += "e";
-    } else if (keyCode == 69) {
-      computer.code += "e";
-    } else if (keyCode == 73) {
-      computer.code += "i";
-    } else if (keyCode == 84) {
-      computer.code += "t";
-    } else if (keyCode == 80) {
-      computer.code += "p";
-    } else if (keyCode == 85) {
-      computer.code += "u";
-    } else if (keyCode == 76) {
-      computer.code += "l";
-    } else if (keyCode == 32) {
-      computer.code += " ";
-    } else if (keyCode == 186) {
-      computer.code += ";";
-    } else if (keyCode == 8) {
-      if (computer.code.length >= 3) {
-        computer.code = computer.code.slice(0, -1);
-      }
-    } else if (keyCode == 13) {
-      if (computer.code.length >= 3) {
-        print("here1");
-        switch (computer.code.substr(2, computer.code.length)) {
-          case "exit":
-            computer.code = "> ";
-            computerToggle = false;
-            break;
 
-          case "git pull":
-            print("here");
-            computer.display += "\n" + computer.code + "\nFile pulled.";
-            computer.code = "> ";
-            break;
-        }
-      }
-    }
+  if (!computerToggle && (currKey === "c" || currKey === "C")) {
+    computerToggle = true;
+  } else if (computerToggle) {
+    if (keyCode == 8 && computer.code.length >= 3)
+      computer.code = computer.code.slice(0, -1);
+    else if (keyCode == 13) computer.terminal.parse(computer.code);
+    else if (keyCode === 20) capitalize = !capitalize;
+    else if (currKey !== undefined) computer.code += currKey;
   }
 }
