@@ -1,6 +1,7 @@
 const [canvasWidth, canvasHeight] = [1000, 400];
 let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
+let [computerToggle, computer] = [false, undefined];
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
@@ -10,6 +11,7 @@ function setup() {
   captureAllAnimation();
   createCanvas(canvasWidth, canvasHeight);
   player = new Player(playerCapture, 50, 50, 6);
+  computer = new Computer(600, 0);
 }
 
 function draw() {
