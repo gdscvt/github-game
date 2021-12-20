@@ -7,6 +7,7 @@ class Terminal {
       dataJson[0].url,
       dataJson[0].files,
     ];
+    this.toPush = [];
     console.log(this.files);
   }
 
