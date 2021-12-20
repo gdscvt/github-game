@@ -11,7 +11,7 @@ class Terminal {
   }
 
   parse(c) {
-    computer.display += "\n" + c + '\n';
+    computer.display += "\n" + c + "\n";
     let cmd = c.split(" ");
     console.log(cmd);
 
@@ -45,6 +45,21 @@ class Terminal {
     }
 
     computer.code = "> ";
+  }
+
+  git(c) {
+    let cmd = c.split(" ");
+    switch (cmd[3]) {
+      case "add":
+        break;
+      case "push":
+        break;
+      case "commit":
+        break;
+      default:
+        computer.display += "No such cmd found! :<";
+        break;
+    }
   }
 
   cd(folder) {
