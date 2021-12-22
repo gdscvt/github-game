@@ -22,7 +22,8 @@ class Computer {
 
     // Display of output
     fill(0, 255, 0);
-    text(this.display, this.scrollX, this.scrollY, 325, 200); 
+    this.t_height = 200 + abs((this.y + 75)- this.scrollY);
+    text(this.display, this.scrollX, this.scrollY, 325, this.t_height); 
 
     fill("#7A7A6C");
     rect(this.x, this.y + 25, 375, 25);
@@ -54,13 +55,15 @@ class Computer {
     pop();
   }
 
-  scrollUp(){
-      if(this.y + this.scrollY >= this.y + 50)
-        this.scrollY -= this.scrollSpeed;
+  // Going to the latest line entered
+  scrollDown(){
+    if(this.scrollY + this.t_height >= this.y + 275)
+      this.scrollY -= this.scrollSpeed;
   }
 
-  scrollDown(){
-    this.scrollY += this.scrollSpeed;
+  scrollUp(){
+    if(this.scrollY <= this.y + 50)
+      this.scrollY += this.scrollSpeed;
   }
 
   onKeyPressed() {
