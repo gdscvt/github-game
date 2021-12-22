@@ -1,7 +1,12 @@
 class Terminal {
   constructor(dataJson) {
-    this.currData = { files: [] };
+    // requiredData contains tha translated json file into json object
     this.requiredData = dataJson[0];
+
+    // files contains the array of files from the dataJson
+    // url contains the url of the folder from the dataJson
+    // currDir contains the files of the current directory; will change
+    // when cd is used and stuff
     [this.files, this.url, this.currDir] = [
       dataJson[0].files,
       dataJson[0].url,
@@ -41,7 +46,7 @@ class Terminal {
         this.exit();
         break;
       default:
-        computer.display += "\nNo such cmd found! :<";
+        computer.display += "\nNo such cmd found! :<\n";
         break;
     }
 
@@ -58,24 +63,35 @@ class Terminal {
       case "commit":
         break;
       default:
-        computer.display += "No such cmd found! :<";
+        computer.display += "No such cmd found! :<\n";
         break;
     }
   }
 
   cd(folder) {
-    // if (folder.includes(".")) {
-    //   computer.display = "Use cd on folders, not files!\n";
-    //   return;
-    // }
-    let instructions = folder.split("/");
+    if (folder === "..") {
+      if (directoryPath.length == 1) {
+        computer.display += "You're already at the base directory\n";
+        return;
+      }
+
+      this.currDir = this.files;
+
+      computer.display += "Back to base directory!\n";
+      return;
+    }
+
     let newDir;
     this.currDir.forEach((curr) => {
       let currFileName = Object.keys(curr)[0];
       if (currFileName === folder) {
         // does things to cd into new dir
+        directoryPath = `/${folder}/`;
+        newDir = curr[folder];
+        computer.display += `Now at ${directoryPath}\n`;
       }
     });
+    if (newDir !== undefined) this.currDir = newDir;
   }
 
   cat(file) {
@@ -91,6 +107,7 @@ class Terminal {
   }
 
   ls(files) {
+    console.log(files);
     files.forEach((file) => {
       let currFileName = Object.keys(file);
       computer.display += `${currFileName}\n`;

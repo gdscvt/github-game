@@ -1,3 +1,4 @@
+let directoryPath = "/";
 let capitalize = false;
 let keycodeMap = {
   48: "0",
