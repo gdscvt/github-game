@@ -14,15 +14,15 @@ class Player {
       sizeX,
       sizeY,
     ];
-    [this.x, this.y, this.speed] = [x, y, 1];
+    [this.x, this.y, this.speed] = [x - 16, y - 16, 1];
   }
 
   draw() {
     // this.onKeyPressed();
     image(
       this.sprite[dirString[this.currAnimation]][animIndex],
-      this.x,
-      this.y,
+      this.x + 16,
+      this.y + 16,
       this.sizeX,
       this.sizeY
     );
@@ -48,6 +48,19 @@ class Player {
     }
   }
 
+  check_collision(projection, obj, constraint){
+    
+    let vert_distance = dist(this.x + projection[0], 0, obj.x, 0);
+    let hort_distance =  dist(0, this.y + projection[1], 0, obj.y);
+    if(vert_distance < constraint && hort_distance < constraint){
+    // let distance = dist(this.x + projection[0], this.y + projection[1], obj.x, obj.y);
+    // if(distance < constraint){
+      return true;
+    }
+
+    return false;
+  }
+
   onKeyPressed() {
     let theta = [];
     if (keyIsDown(KEY_S)) theta = this.moveDir(DOWN);
@@ -55,6 +68,13 @@ class Player {
     else if (keyIsDown(KEY_A)) theta = this.moveDir(LEFT);
     else if (keyIsDown(KEY_D)) theta = this.moveDir(RIGHT);
     else theta = this.moveDir();
+
+    // for (let obj of game.walls){
+    //   if(theta != [0, 0] && this.check_collision([1,1], obj, 26)){
+    //     theta = [0, 0];
+    //     break;
+    //   }
+    // }
 
     this.x =
       theta[0] < canvasWidth - this.sizeX && theta[0] > 0 ? theta[0] : this.x;

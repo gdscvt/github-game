@@ -3,22 +3,58 @@ let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
 let [level1] = [undefined];
+let [game, environment, envCapture, env1Sprite] = [undefined, [], undefined, undefined];
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
+  env1Sprite = loadImage("/resources/assets/env1Sprite.png");
   level1 = loadJSON("./resources/terminalConfigs/level1.json");
 }
 
 function setup() {
   captureAllAnimation();
   createCanvas(canvasWidth, canvasHeight);
+  game = new Game();
   player = new Player(playerCapture, 50, 50, 6);
   computer = new Computer(600, 0);
   computer.terminal = new Terminal(level1);
+
+  game.initTilemap();
+  environment.push(new EnvObjects(envCapture[0], 20, 20, 352, 63));
+  environment.push(new EnvObjects(envCapture[0], 628, 20, 352, 63));
+  environment.push(new EnvObjects(envCapture[0], 20, 317, 352, 63));
+  environment.push(new EnvObjects(envCapture[0], 628, 317, 352, 63));
+
+  // environment.push(new EnvObjects(envCapture[1], 20, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*1, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*2, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*3, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*4, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*5, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*6, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*7, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*8, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*9, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*10, 83, 40, 20));
+  // environment.push(new EnvObjects(envCapture[1], 20 + 40*11, 83, 40, 20));
+
 }
 
 function draw() {
   background(220);
+  
+  for (obj of game.tiles){
+    obj.draw();
+  }
+
+  for (obj of game.walls){
+    obj.draw();
+  }
+
+  for (obj of environment){
+    obj.draw();
+  }
+
   player.draw();
   if (frameCount - currFrameCount > 10) {
     animIndex = floor(animIndex + 1) % frameSize;
