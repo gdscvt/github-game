@@ -34,6 +34,15 @@ function captureEnv1(){
         envCapture.push(get(129, 33, 352, 63));
         envCapture.push(get(320, 193, 64, 32));
         envCapture.push(get(192, 256, 32, 32));
+
+        desk1Hcapture= get(224, 32, 64, 64); // front
+        desk2Hcapture = get(288, 32, 64, 64); // front
+        desk3Hcapture = get(352, 32, 64, 64); // back
+        desk4Hcapture = get(416, 32, 64, 64); // back
+        desk5Hcapture = get(160, 32, 64, 64); 
+        
+        desk1Vcapture = get(384, 128, 32, 64);
+        desk2Vcapture = get(448, 128, 32, 64);
     pop();
 }
 

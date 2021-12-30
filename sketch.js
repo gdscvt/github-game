@@ -4,7 +4,7 @@ let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
 let [level1] = [undefined];
 let [game, environment, envCapture, env1Sprite] = [undefined, [], undefined, undefined];
-
+let [desk1Hcapture, desk2Hcapture, desk3Hcapture, desk4Hcapture, desk5Hcapture, desk1Vcapture, desk2Vcapture] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
   env1Sprite = loadImage("/resources/assets/env1Sprite.png");
@@ -20,10 +20,24 @@ function setup() {
   computer.terminal = new Terminal(level1);
 
   game.initTilemap();
-  environment.push(new EnvObjects(envCapture[0], 20, 20, 352, 63));
+  // environment.push(new EnvObjects(envCapture[0], 20, 20, 352, 63));
   environment.push(new EnvObjects(envCapture[0], 628, 20, 352, 63));
   environment.push(new EnvObjects(envCapture[0], 20, 317, 352, 63));
   environment.push(new EnvObjects(envCapture[0], 628, 317, 352, 63));
+
+  environment.push(new EnvObjects(desk3Hcapture, 450, 100, 50, 50));
+  environment.push(new EnvObjects(desk4Hcapture, 500, 100, 50, 50));
+  environment.push(new EnvObjects(desk1Hcapture, 450, 185, 50, 50));
+  environment.push(new EnvObjects(desk2Hcapture, 500, 185, 50, 50));
+
+  environment.push(new EnvObjects(desk1Vcapture, 425, 125, 25, 50));
+  environment.push(new EnvObjects(desk2Vcapture, 550, 125, 25, 50));
+  environment.push(new EnvObjects(desk1Vcapture, 425, 165, 25, 50));
+  environment.push(new EnvObjects(desk2Vcapture, 550, 165, 25, 50));
+
+  environment.push(new EnvObjects(desk5Hcapture, 20, 20, 50, 50));
+  environment.push(new EnvObjects(desk5Hcapture, 20 + 64, 20, 50, 50));
+  environment.push(new EnvObjects(desk5Hcapture, 20 + 64 + 64, 20, 50, 50));
 
   // environment.push(new EnvObjects(envCapture[1], 20, 83, 40, 20));
   // environment.push(new EnvObjects(envCapture[1], 20 + 40*1, 83, 40, 20));
