@@ -5,6 +5,8 @@ let [computerToggle, computer] = [false, undefined];
 let [level1] = [undefined];
 let [game, environment, envCapture, env1Sprite] = [undefined, [], undefined, undefined];
 let [desk1Hcapture, desk2Hcapture, desk3Hcapture, desk4Hcapture, desk5Hcapture, desk1Vcapture, desk2Vcapture] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+let [popupToggle, popup] = [false, undefined];
+
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
   env1Sprite = loadImage("/resources/assets/env1Sprite.png");
@@ -18,6 +20,7 @@ function setup() {
   player = new Player(playerCapture, 50, 50, 6);
   computer = new Computer(600, 0);
   computer.terminal = new Terminal(level1);
+  // popup = new Popup("Interact with server 1 plz\n");
 
   game.initTilemap();
   // environment.push(new EnvObjects(envCapture[0], 20, 20, 352, 63));
@@ -84,6 +87,9 @@ function draw() {
   } else {
     player.onKeyPressed();
   }
+  if (popupToggle) {
+    popup.draw();
+  }
 }
 
 // Only activated, if the key is released
@@ -94,6 +100,18 @@ function keyReleased() {
       ? keycodeMap[keyCode].toUpperCase()
       : keycodeMap[keyCode];
   }
+
+  if (!popupToggle && (currKey === "h" || currKey === "H") && !computerToggle) {
+    console.log("wtf");
+    popupToggle = !popupToggle;
+  } else if (
+    popupToggle &&
+    !computerToggle &&
+    (currKey === "h" || currKey === "H")
+  ) {
+    popupToggle = !popupToggle;
+  }
+
 
   if (!computerToggle && (currKey === "c" || currKey === "C")) {
     computerToggle = true;

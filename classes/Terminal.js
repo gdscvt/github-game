@@ -11,6 +11,8 @@ class Terminal {
     this.files = dataJson[0].files;
     this.url = dataJson[0].url;
     this.currDir = dataJson[0].files;
+    this.popup = dataJson[0].popup;
+    popup = new Popup(this.popup);
 
     // TODO "repo" to push to
     this.toPush = [];
