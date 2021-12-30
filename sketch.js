@@ -3,7 +3,13 @@ let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
 let [level1] = [undefined];
-let [game, environment, envCapture, env1Sprite] = [undefined, [], undefined, undefined];
+let [popupToggle, popup] = [false, undefined];
+let [game, environment, envCapture, env1Sprite] = [
+  undefined,
+  [],
+  undefined,
+  undefined,
+];
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
@@ -18,6 +24,7 @@ function setup() {
   player = new Player(playerCapture, 50, 50, 6);
   computer = new Computer(600, 0);
   computer.terminal = new Terminal(level1);
+  // popup = new Popup("Interact with server 1 plz\n");
 
   game.initTilemap();
   environment.push(new EnvObjects(envCapture[0], 20, 20, 352, 63));
@@ -37,21 +44,20 @@ function setup() {
   // environment.push(new EnvObjects(envCapture[1], 20 + 40*9, 83, 40, 20));
   // environment.push(new EnvObjects(envCapture[1], 20 + 40*10, 83, 40, 20));
   // environment.push(new EnvObjects(envCapture[1], 20 + 40*11, 83, 40, 20));
-
 }
 
 function draw() {
   background(220);
-  
-  for (obj of game.tiles){
+
+  for (obj of game.tiles) {
     obj.draw();
   }
 
-  for (obj of game.walls){
+  for (obj of game.walls) {
     obj.draw();
   }
 
-  for (obj of environment){
+  for (obj of environment) {
     obj.draw();
   }
 
@@ -70,6 +76,10 @@ function draw() {
   } else {
     player.onKeyPressed();
   }
+
+  if (popupToggle) {
+    popup.draw();
+  }
 }
 
 // Only activated, if the key is released
@@ -79,6 +89,17 @@ function keyReleased() {
     currKey = capitalize
       ? keycodeMap[keyCode].toUpperCase()
       : keycodeMap[keyCode];
+  }
+
+  if (!popupToggle && (currKey === "h" || currKey === "H") && !computerToggle) {
+    console.log("wtf");
+    popupToggle = !popupToggle;
+  } else if (
+    popupToggle &&
+    !computerToggle &&
+    (currKey === "h" || currKey === "H")
+  ) {
+    popupToggle = !popupToggle;
   }
 
   if (!computerToggle && (currKey === "c" || currKey === "C")) {

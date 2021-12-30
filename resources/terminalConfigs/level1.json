@@ -1,5 +1,5 @@
 [
     {"files": [{"instructions.txt": "UP\nUP\nRIGHT\n"}, {"testing": [{"instructions2.txt":"RIGHT\n"}]}],
     "url": "https://somewhere.fake",
-"solution": [{"instructions.txt": "UP\nUP\nRIGHT\n"}]}
+"solution": [{"instructions.txt": "UP\nUP\nRIGHT\n"}], "popup": "smth smth smth\nLevel 1 biatch wooooo\n"}
 ]
