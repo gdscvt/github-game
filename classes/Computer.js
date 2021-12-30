@@ -34,11 +34,11 @@ class Computer {
     fill("#7A7A6C");
     rect(this.x, this.y + 350, 375, 25);
 
-    fill(220);
-    rect(this.x, this.y + 375, 375, 25);
+    // fill(220);
+    // rect(this.x, this.y + 375, 375, 25);
 
-    fill(220);
-    rect(this.x, this.y, 375, 25);
+    // fill(220);
+    // rect(this.x, this.y, 375, 25);
 
     fill(0);
     // Text entry Screen
