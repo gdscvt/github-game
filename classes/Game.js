@@ -1,6 +1,6 @@
 function Game(){
     this.tilemap = [
-        "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+        "wwwwwwwwwwwwwwwwwwwwwwwwdwwwwwwwwwwwwwwwwwwwwwwwww",
         "wt t t t t t t t t t t t t t t t t t t t t t t t w",
         "wt t t t t t t t t t t t t t t t t t t t t t t t w",
         "wt t t t t t t t t t t t t t t t t t t t t t t t w",
@@ -23,6 +23,7 @@ function Game(){
     ]
     this.walls = [];
     this.tiles = [];
+    this.doors = undefined;
 }
 
 Game.prototype.initTilemap = function(){
@@ -35,6 +36,10 @@ Game.prototype.initTilemap = function(){
 
                 case 't':
                     this.tiles.push(new Tile(envCapture[1], j*20, i*20));
+                    break;
+
+                case 'd':
+                    this.doors = (new Door(doors, j*20, i*20, 20, 20));
                     break;
             }
         }

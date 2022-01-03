@@ -43,6 +43,19 @@ function captureEnv1(){
         
         desk1Vcapture = get(384, 128, 32, 64);
         desk2Vcapture = get(448, 128, 32, 64);
+
+        chair = get(100, 133, 24, 24);
+    pop();
+}
+
+function captureEnv2(){
+    push();
+        image(doorSprite, 0, 0);
+
+        doors.push(get(34 + 2, 12, 38, 52));
+        doors.push(get(34 + 2, 52 * 1 + 12 * 2, 38, 52));
+        doors.push(get(34 + 2, 52 * 2 + 12 * 3, 38, 52));
+        doors.push(get(34 + 2, 52 * 3 + 12 * 4, 38, 52));
     pop();
 }
 
@@ -51,4 +64,6 @@ function captureAllAnimation(){
     capturePlayer();
     createCanvas(512, 512);
     captureEnv1();
+    createCanvas(456, 512);
+    captureEnv2();
 }

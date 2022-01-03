@@ -6,54 +6,68 @@ let [level1] = [undefined];
 let [game, environment, envCapture, env1Sprite] = [undefined, [], undefined, undefined];
 let [desk1Hcapture, desk2Hcapture, desk3Hcapture, desk4Hcapture, desk5Hcapture, desk1Vcapture, desk2Vcapture] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
 let [popupToggle, popup] = [false, undefined];
+let chair = undefined;
+let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
+let doors = [];
+let game_win = false;
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
   env1Sprite = loadImage("/resources/assets/env1Sprite.png");
   level1 = loadJSON("./resources/terminalConfigs/level1.json");
+  doorSprite = loadImage('/resources/assets/doors.png');
 }
 
 function setup() {
   captureAllAnimation();
   createCanvas(canvasWidth, canvasHeight);
   game = new Game();
-  player = new Player(playerCapture, 50, 50, 6);
+  player = new Player(playerCapture, 50, 100, 6);
   computer = new Computer(600, 0);
   computer.terminal = new Terminal(level1);
   // popup = new Popup("Interact with server 1 plz\n");
 
   game.initTilemap();
-  // environment.push(new EnvObjects(envCapture[0], 20, 20, 352, 63));
-  environment.push(new EnvObjects(envCapture[0], 628, 20, 352, 63));
-  environment.push(new EnvObjects(envCapture[0], 20, 317, 352, 63));
-  environment.push(new EnvObjects(envCapture[0], 628, 317, 352, 63));
 
-  environment.push(new EnvObjects(desk3Hcapture, 450, 100, 50, 50));
-  environment.push(new EnvObjects(desk4Hcapture, 500, 100, 50, 50));
-  environment.push(new EnvObjects(desk1Hcapture, 450, 185, 50, 50));
-  environment.push(new EnvObjects(desk2Hcapture, 500, 185, 50, 50));
+  environment.push(new EnvObjects(desk3Hcapture, 450 - 7, 95, 64, 64));
+  environment.push(new EnvObjects(desk4Hcapture, 500 - 7, 95, 64, 64));
+  environment.push(new EnvObjects(desk1Hcapture, 450 - 7, 205, 64, 64));
+  environment.push(new EnvObjects(desk2Hcapture, 500 - 7, 205, 64, 64));
 
-  environment.push(new EnvObjects(desk1Vcapture, 425, 125, 25, 50));
-  environment.push(new EnvObjects(desk2Vcapture, 550, 125, 25, 50));
-  environment.push(new EnvObjects(desk1Vcapture, 425, 165, 25, 50));
-  environment.push(new EnvObjects(desk2Vcapture, 550, 165, 25, 50));
+  environment.push(new EnvObjects(desk2Vcapture, 418 - 7, 132, 32, 64));
+  environment.push(new EnvObjects(desk1Vcapture, 564 - 7, 132, 32, 64));
 
-  environment.push(new EnvObjects(desk5Hcapture, 20, 20, 50, 50));
-  environment.push(new EnvObjects(desk5Hcapture, 20 + 64, 20, 50, 50));
-  environment.push(new EnvObjects(desk5Hcapture, 20 + 64 + 64, 20, 50, 50));
+  environment.push(new EnvObjects(chair, 418 - 30, 150, 24, 24));
 
-  // environment.push(new EnvObjects(envCapture[1], 20, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*1, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*2, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*3, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*4, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*5, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*6, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*7, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*8, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*9, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*10, 83, 40, 20));
-  // environment.push(new EnvObjects(envCapture[1], 20 + 40*11, 83, 40, 20));
+  environment.push(new EnvObjects(desk2Vcapture, 418 - 7, 172, 32, 64));
+  environment.push(new EnvObjects(desk1Vcapture, 564 - 7, 172, 32, 64));
+
+  environment.push(new EnvObjects(chair, 564 + 26, 150, 24, 24));
+  environment.push(new EnvObjects(chair, 564 + 26, 190, 24, 24));
+
+  environment.push(new EnvObjects(desk1Hcapture, 20, 20, 64, 64));
+  environment.push(new EnvObjects(desk2Hcapture, 20 + 64, 20, 64, 64));
+  environment.push(new EnvObjects(desk5Hcapture, 20 + 64 * 2, 20, 64, 64));
+  environment.push(new EnvObjects(desk1Hcapture, 20 + 64 * 3, 20, 64, 64));
+  environment.push(new EnvObjects(desk2Hcapture, 20 + 64 * 4, 20, 64, 64));
+
+  environment.push(new EnvObjects(desk1Hcapture, 660, 20, 64, 64));
+  environment.push(new EnvObjects(desk2Hcapture, 660 + 64, 20, 64, 64));
+  environment.push(new EnvObjects(desk5Hcapture, 660 + 64 * 2, 20, 64, 64));
+  environment.push(new EnvObjects(desk1Hcapture, 660 + 64 * 3, 20, 64, 64));
+  environment.push(new EnvObjects(desk2Hcapture, 660 + 64 * 4, 20, 64, 64));
+
+  environment.push(new EnvObjects(desk3Hcapture, 20, 330, 64, 64));
+  environment.push(new EnvObjects(desk4Hcapture, 20 + 64, 330, 64, 64));
+  // environment.push(new EnvObjects(desk5Hcapture, 20 + 64 * 2, 330, 64, 64));
+  environment.push(new EnvObjects(desk3Hcapture, 20 + 64 * 3, 330, 64, 64));
+  environment.push(new EnvObjects(desk4Hcapture, 20 + 64 * 4, 330, 64, 64));
+
+  environment.push(new EnvObjects(desk3Hcapture, 660, 330, 64, 64));
+  environment.push(new EnvObjects(desk4Hcapture, 660 + 64, 330, 64, 64));
+  // environment.push(new EnvObjects(desk5Hcapture, 660 + 64 * 2, 330, 64, 64));
+  environment.push(new EnvObjects(desk3Hcapture, 660 + 64 * 3, 330, 64, 64));
+  environment.push(new EnvObjects(desk4Hcapture, 660 + 64 * 4, 330, 64, 64));
 
 }
 
@@ -64,12 +78,18 @@ function draw() {
     obj.draw();
   }
 
+  for (obj of environment){
+    obj.draw();
+  }
+
   for (obj of game.walls){
     obj.draw();
   }
 
-  for (obj of environment){
-    obj.draw();
+  game.doors.draw();
+
+  if(game_win){
+    game.doors.open();
   }
 
   player.draw();

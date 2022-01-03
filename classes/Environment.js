@@ -1,62 +1,79 @@
 // Template for Environment objects
-function Environment(image, x, y){
-    this.x = x;
-    this.y = y;
-    this.image = image;
+class Environment{
+    constructor(image, x, y){
+        this.x = x;
+        this.y = y;
+        this.image = image;
+    }
 }
 
 // Template for Env Objects
-function EnvObjects(image, x, y,  w, h, rotation= 0){
-    Environment.call(this, image, x, y);
+class EnvObjects extends Environment{
+    constructor(image, x, y,  w, h, rotation= 0){
+        super(image, x + w/2, y + h/2);
+    
+        [this.rotation, this.width, this.height] = [rotation, w, h];
+    }
 
-    [this.rotation, this.width, this.height] = [rotation, w, h];
-}
-EnvObjects.prototype = Object.create(Environment.prototype);
-
-EnvObjects.prototype.draw = function(){
-    push();
-        translate(this.x, this.y);
-        rotate(this.rotation);
-        image(this.image, 0, 0, this.width, this.height);
-    pop();
-}
-
-function Tile(image, x, y){
-    Environment.call(this, image, x, y);
+    draw(){
+        push();
+            translate(this.x - this.width/2, this.y - this.height/2);
+            rotate(this.rotation);
+            image(this.image, 0, 0, this.width, this.height);
+        pop();
+    }
 }
 
-Tile.prototype = Object.create(Tile.prototype);
+// Template for Tile class
+class Tile extends Environment{
+    constructor(image, x, y){
+        super(image, x, y);
+    }
 
-Tile.prototype.draw = function(){
-    push();
-        image(this.image, this.x, this.y, 40, 20);
-    pop();
+    draw(){
+        push();
+            image(this.image, this.x, this.y, 40, 20);
+        pop();
+    }
 }
 
-function Wall(image, x, y){
-    Environment.call(this, image, x - 10, y - 10);
+// Template for Wall class
+class Wall extends Environment{
+    constructor(image, x, y){
+        super(image, x + 10, y + 10);
+    }
+
+    draw(){
+        push();
+            image(this.image, this.x - 10, this.y - 10, 20, 20);
+        pop();
+    }
 }
 
-Wall.prototype = Object.create(Wall.prototype);
+class Door{
+    constructor(images, x, y, w, h){
+        this.images = images;
+        this.x = x;
+        this.y = y;
+        this.width = w;
+        this.height = h;
+        this.index = 0;
+    }
+    draw(){
+        push();
+            let index = floor(this.index) % this.images.length;
+            image(this.images[index], this.x, this.y, this.width, this.height);
+        pop();
+    }
 
-Wall.prototype.draw = function(){
-    push();
-        image(this.image, this.x + 10, this.y + 10, 20, 20);
-    pop();
+    open(){
+        if(floor(this.index + 0.05) % this.images.length != this.images.length - 1)
+            this.index += 0.05;
+    }
+
+    close(){
+        print(floor(this.index - 0.05) % this.images.length)
+        if(floor(this.index -= 0.05) % this.images.length != 0)
+            this.index -= 0.05;
+    }
 }
-
-
-Object.defineProperty(EnvObjects.prototype, 'constructor', {
-    value: EnvObjects,
-    enumerable: false, // so that it does not appear in 'for in' loop
-    writable: true });
-
-Object.defineProperty(Tile.prototype, 'constructor', {
-    value: Tile,
-    enumerable: true, // so that it does not appear in 'for in' loop
-    writable: true });
-
-Object.defineProperty(Wall.prototype, 'constructor', {
-    value: Wall,
-    enumerable: true, // so that it does not appear in 'for in' loop
-    writable: true });

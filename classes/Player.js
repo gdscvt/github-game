@@ -14,18 +14,19 @@ class Player {
       sizeX,
       sizeY,
     ];
-    [this.x, this.y, this.speed] = [x - 16, y - 16, 1];
+    [this.x, this.y, this.speed] = [x, y, 1];
   }
 
   draw() {
     // this.onKeyPressed();
     image(
       this.sprite[dirString[this.currAnimation]][animIndex],
-      this.x + 16,
-      this.y + 16,
+      this.x - 16,
+      this.y - 16,
       this.sizeX,
       this.sizeY
     );
+    
   }
 
   moveDir(direction) {
@@ -48,13 +49,16 @@ class Player {
     }
   }
 
-  check_collision(projection, obj, constraint){
+  check_collision(projection, obj, constraint_x, constraint_y){
     
-    let vert_distance = dist(this.x + projection[0], 0, obj.x, 0);
-    let hort_distance =  dist(0, this.y + projection[1], 0, obj.y);
-    if(vert_distance < constraint && hort_distance < constraint){
-    // let distance = dist(this.x + projection[0], this.y + projection[1], obj.x, obj.y);
-    // if(distance < constraint){
+    let hort_distance = dist(projection[0], 0, obj.x, 0);
+    let vert_distance =  dist(0, projection[1], 0, obj.y);
+
+    if(vert_distance < constraint_y && hort_distance < constraint_x){
+
+      print('(' + obj.x + ',' + obj.y + ') blocked when player is at (' + this.x + ',' + this.y + ')')
+      print('Euc Dist= h( '+ hort_distance+' ) v( '+ vert_distance +' )')
+
       return true;
     }
 
@@ -69,16 +73,30 @@ class Player {
     else if (keyIsDown(KEY_D)) theta = this.moveDir(RIGHT);
     else theta = this.moveDir();
 
-    // for (let obj of game.walls){
-    //   if(theta != [0, 0] && this.check_collision([1,1], obj, 26)){
-    //     theta = [0, 0];
-    //     break;
-    //   }
-    // }
+    // Player threshold = 32/2 = 16
+    // Wall threshold = 20/2 = 10
+    // Collision threshold = 10 + 16 = 26
+    for (let obj of game.walls){
+      
+      if(this.check_collision(theta, obj, 26, 26)){
+        theta = [this.x, this.y];
+        break;
+      }
+    }
+
+    for (let obj of environment){
+      
+      if(this.check_collision(theta, obj, obj.width/2 + 16 - 5, obj.height/2 + 16 - 5)){
+        theta = [this.x, this.y];
+        break;
+      }
+    }
 
     this.x =
-      theta[0] < canvasWidth - this.sizeX && theta[0] > 0 ? theta[0] : this.x;
+      // theta[0] < canvasWidth - this.sizeX && 
+      theta[0] > 0 ? theta[0] : this.x;
     this.y =
-      theta[1] < canvasHeight - this.sizeY && theta[1] > 0 ? theta[1] : this.y;
+      // theta[1] < canvasHeight - this.sizeY && 
+      theta[1] > 0 ? theta[1] : this.y;
   }
 }
