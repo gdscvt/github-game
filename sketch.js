@@ -32,7 +32,6 @@ let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
 let doors = [];
 let game_win = false;
 let key_table = undefined;
-let currentLvlPassed = false;
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");

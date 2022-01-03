@@ -68,21 +68,24 @@ class Terminal {
     if (this.tutorial !== undefined) {
       console.log("Here??\n");
       this.tutorial.forEach((file) => {
+        console.log(file);
         let currFileName = Object.keys(file)[0];
         let containsCurrentFile = false;
-        for (let i = 0; i < this.solution.length; i++) {
-          let currFileNameRepo = Object.keys(this.solution[i])[0];
+        for (let i = 0; i < this.files.length; i++) {
+          let currFileNameRepo = Object.keys(this.tutorial[i])[0];
           if (currFileName === currFileNameRepo) containsCurrentFile = true;
           if (!containsCurrentFile) tutorialPassed = false;
         }
-      });
-    }
 
-    if (tutorialPassed) {
-      // Switches popup msg when tutorial is passed
-      computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
-      popup = new Popup(this.requiredData.tutorialCompleteMsg);
-      currentLvlPassed = true;
+        if (this.files.length === 0) tutorialPassed = false;
+      });
+
+      if (tutorialPassed) {
+        // Switches popup msg when tutorial is passed
+        computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
+        popup = new Popup(this.requiredData.tutorialCompleteMsg);
+        game_win = true;
+      }
     }
   }
 
