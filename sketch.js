@@ -10,6 +10,7 @@ let chair = undefined;
 let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
 let doors = [];
 let game_win = false;
+let key_table = undefined;
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
@@ -39,7 +40,9 @@ function setup() {
 
   environment.push(new EnvObjects(chair, 418 - 30, 150, 24, 24));
 
+  // Key computer
   environment.push(new EnvObjects(desk2Vcapture, 418 - 7, 172, 32, 64));
+  key_table = environment.length - 1;
   environment.push(new EnvObjects(desk1Vcapture, 564 - 7, 172, 32, 64));
 
   environment.push(new EnvObjects(chair, 564 + 26, 150, 24, 24));
@@ -134,12 +137,19 @@ function keyReleased() {
 
 
   if (!computerToggle && (currKey === "c" || currKey === "C")) {
-    computerToggle = true;
-  } else if (computerToggle) {
-    if (keyCode == 8 && computer.code.length >= 3)
-      computer.code = computer.code.slice(0, -1);
-    else if (keyCode == 13) computer.terminal.parse(computer.code);
-    else if (keyCode === 20) capitalize = !capitalize;
-    else if (currKey !== undefined) computer.code += currKey;
+    let obj = environment[key_table]; 
+    if(player.check_collision([player.x , player.y], obj, obj.width/2 + 16 + 5, obj.height/2 + 16 + 5)){
+      
+      if(!computerToggle){
+        computerToggle = true;
+      } 
+    }
+  }
+  else if (computerToggle) {
+        if (keyCode == 8 && computer.code.length >= 3)
+          computer.code = computer.code.slice(0, -1);
+        else if (keyCode == 13) computer.terminal.parse(computer.code);
+        else if (keyCode === 20) capitalize = !capitalize;
+        else if (currKey !== undefined) computer.code += currKey;
   }
 }

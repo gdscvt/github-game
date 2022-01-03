@@ -65,6 +65,16 @@ class Player {
     return false;
   }
 
+  check_collision_env(theta){
+    for (let obj of environment){
+      
+      if(this.check_collision(theta, obj, obj.width/2 + 16 - 5, obj.height/2 + 16 - 5)){
+        return true;
+      }
+    }
+    return false;
+  }
+
   onKeyPressed() {
     let theta = [];
     if (keyIsDown(KEY_S)) theta = this.moveDir(DOWN);
@@ -84,13 +94,8 @@ class Player {
       }
     }
 
-    for (let obj of environment){
-      
-      if(this.check_collision(theta, obj, obj.width/2 + 16 - 5, obj.height/2 + 16 - 5)){
-        theta = [this.x, this.y];
-        break;
-      }
-    }
+    if(this.check_collision_env(theta))
+      theta = [this.x, this.y];
 
     this.x =
       // theta[0] < canvasWidth - this.sizeX && 
