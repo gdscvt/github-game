@@ -3,20 +3,42 @@ let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
 let [level1] = [undefined];
-let [game, environment, envCapture, env1Sprite] = [undefined, [], undefined, undefined];
-let [desk1Hcapture, desk2Hcapture, desk3Hcapture, desk4Hcapture, desk5Hcapture, desk1Vcapture, desk2Vcapture] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+let [game, environment, envCapture, env1Sprite] = [
+  undefined,
+  [],
+  undefined,
+  undefined,
+];
+let [
+  desk1Hcapture,
+  desk2Hcapture,
+  desk3Hcapture,
+  desk4Hcapture,
+  desk5Hcapture,
+  desk1Vcapture,
+  desk2Vcapture,
+] = [
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+];
 let [popupToggle, popup] = [false, undefined];
 let chair = undefined;
 let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
 let doors = [];
 let game_win = false;
 let key_table = undefined;
+let currentLvlPassed = false;
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
   env1Sprite = loadImage("/resources/assets/env1Sprite.png");
   level1 = loadJSON("./resources/terminalConfigs/level1.json");
-  doorSprite = loadImage('/resources/assets/doors.png');
+  doorSprite = loadImage("/resources/assets/doors.png");
 }
 
 function setup() {
@@ -71,22 +93,21 @@ function setup() {
   // environment.push(new EnvObjects(desk5Hcapture, 660 + 64 * 2, 330, 64, 64));
   environment.push(new EnvObjects(desk3Hcapture, 660 + 64 * 3, 330, 64, 64));
   environment.push(new EnvObjects(desk4Hcapture, 660 + 64 * 4, 330, 64, 64));
-
 }
 
 function draw() {
   background(220);
-  
-  for (obj of game.tiles){
+
+  for (obj of game.tiles) {
     obj.draw();
   }
 
-  for (obj of environment){
+  for (obj of environment) {
     obj.draw();
   }
   game.doors.draw();
 
-  if(game_win){
+  if (game_win) {
     game.doors.open();
   }
 
@@ -109,10 +130,9 @@ function draw() {
     popup.draw();
   }
 
-  for (obj of game.walls){
+  for (obj of game.walls) {
     obj.draw();
   }
-
 }
 
 // Only activated, if the key is released
@@ -135,21 +155,25 @@ function keyReleased() {
     popupToggle = !popupToggle;
   }
 
-
   if (!computerToggle && (currKey === "c" || currKey === "C")) {
-    let obj = environment[key_table]; 
-    if(player.check_collision([player.x , player.y], obj, obj.width/2 + 16 + 5, obj.height/2 + 16 + 5)){
-      
-      if(!computerToggle){
+    let obj = environment[key_table];
+    if (
+      player.check_collision(
+        [player.x, player.y],
+        obj,
+        obj.width / 2 + 16 + 5,
+        obj.height / 2 + 16 + 5
+      )
+    ) {
+      if (!computerToggle) {
         computerToggle = true;
-      } 
+      }
     }
-  }
-  else if (computerToggle) {
-        if (keyCode == 8 && computer.code.length >= 3)
-          computer.code = computer.code.slice(0, -1);
-        else if (keyCode == 13) computer.terminal.parse(computer.code);
-        else if (keyCode === 20) capitalize = !capitalize;
-        else if (currKey !== undefined) computer.code += currKey;
+  } else if (computerToggle) {
+    if (keyCode == 8 && computer.code.length >= 3)
+      computer.code = computer.code.slice(0, -1);
+    else if (keyCode == 13) computer.terminal.parse(computer.code);
+    else if (keyCode === 20) capitalize = !capitalize;
+    else if (currKey !== undefined) computer.code += currKey;
   }
 }
