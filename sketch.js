@@ -84,11 +84,6 @@ function draw() {
   for (obj of environment){
     obj.draw();
   }
-
-  for (obj of game.walls){
-    obj.draw();
-  }
-
   game.doors.draw();
 
   if(game_win){
@@ -113,6 +108,11 @@ function draw() {
   if (popupToggle) {
     popup.draw();
   }
+
+  for (obj of game.walls){
+    obj.draw();
+  }
+
 }
 
 // Only activated, if the key is released
@@ -125,7 +125,7 @@ function keyReleased() {
   }
 
   if (!popupToggle && (currKey === "h" || currKey === "H") && !computerToggle) {
-    console.log("wtf");
+    console.log("Hint message wanted!");
     popupToggle = !popupToggle;
   } else if (
     popupToggle &&

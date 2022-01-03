@@ -14,7 +14,7 @@ class Computer {
     push();
     noStroke();
     fill("#7A7A6C");
-    rect(this.x, this.y + 25, 375, 350);
+    rect(this.x, this.y + 20, 380, 350);
 
     fill(0);
     // Output Screen
@@ -26,13 +26,13 @@ class Computer {
     text(this.display, this.scrollX, this.scrollY, 325, this.t_height);
 
     fill("#7A7A6C");
-    rect(this.x, this.y + 25, 375, 25);
+    rect(this.x, this.y + 20, 380, 30);
 
     fill("#7A7A6C");
-    rect(this.x, this.y + 275, 375, 25);
+    rect(this.x, this.y + 275, 380, 25);
 
     fill("#7A7A6C");
-    rect(this.x, this.y + 350, 375, 25);
+    rect(this.x, this.y + 350, 380, 30);
 
     // fill(220);
     // rect(this.x, this.y + 375, 375, 25);
