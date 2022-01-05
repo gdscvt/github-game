@@ -1,16 +1,21 @@
+// "filesRepo": [{"instructions.txt": "UP\nUP\nRIGHT\n"}, {"testing": [{"instructions2.txt":"RIGHT\n"}]}],
 class Terminal {
   constructor(dataJson) {
     // requiredData contains tha translated json file into json object
     this.requiredData = dataJson[0];
+
+    if (dataJson[0].solution.length === 0) {
+      this.tutorial = dataJson[0].tutorial;
+    }
     this.solution = dataJson[0].solution;
 
     // files contains the array of files from the dataJson
     // url contains the url of the folder from the dataJson
     // currDir contains the files of the current directory; will change
     // when cd is used and stuff
-    this.files = dataJson[0].files;
+    this.files = [];
     this.url = dataJson[0].url;
-    this.currDir = dataJson[0].files;
+    this.currDir = [];
     this.popup = dataJson[0].popup;
     popup = new Popup(this.popup);
 
@@ -54,6 +59,34 @@ class Terminal {
     }
 
     computer.code = "> ";
+
+    // Only goes here if this is a tutorial level
+
+    let tutorialPassed = true;
+
+    // TODO needs more work for levels later, and different checks
+    if (this.tutorial !== undefined) {
+      console.log("Here??\n");
+      this.tutorial.forEach((file) => {
+        console.log(file);
+        let currFileName = Object.keys(file)[0];
+        let containsCurrentFile = false;
+        for (let i = 0; i < this.files.length; i++) {
+          let currFileNameRepo = Object.keys(this.tutorial[i])[0];
+          if (currFileName === currFileNameRepo) containsCurrentFile = true;
+          if (!containsCurrentFile) tutorialPassed = false;
+        }
+
+        if (this.files.length === 0) tutorialPassed = false;
+      });
+
+      if (tutorialPassed) {
+        // Switches popup msg when tutorial is passed
+        computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
+        popup = new Popup(this.requiredData.tutorialCompleteMsg);
+        game_win = true;
+      }
+    }
   }
 
   git(c) {
@@ -109,6 +142,10 @@ class Terminal {
           if (!containsCurrentFile) correctSolutionCheck = false;
         });
 
+        if (this.tutorial !== undefined) {
+          return;
+        }
+
         if (correctSolutionCheck)
           computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;
         else
@@ -142,6 +179,22 @@ class Terminal {
       case "stash":
         this.toPush = [];
         this.commitMsg = "";
+        break;
+      case "clone":
+        if (this.files.length > 0) {
+          computer.display += "Already cloned :<\n";
+          return;
+        }
+
+        if (cmd[3] !== this.url) {
+          computer.display += "Wrong URL :<\n";
+          return;
+        }
+
+        this.files = this.requiredData.filesRepo;
+        this.currDir = this.requiredData.filesRepo;
+        computer.display += `Files from given repo cloned! \n`;
+        break;
       default:
         computer.display += "No such cmd found! :<\n";
         break;
