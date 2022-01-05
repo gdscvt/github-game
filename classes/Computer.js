@@ -7,6 +7,7 @@ class Computer {
     this.scrollSpeed = 1;
     this.code = "> ";
     this.display = "";
+    this.lineCount = 0;
     this.terminal = undefined;
   }
 
@@ -23,6 +24,7 @@ class Computer {
     // Display of output
     fill(0, 255, 0);
     this.t_height = 200 + abs(this.y + 75 - this.scrollY);
+    this.t_height = this.lineCount * 12;
     text(this.display, this.scrollX, this.scrollY, 325, this.t_height);
 
     fill("#7A7A6C");

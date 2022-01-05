@@ -25,6 +25,7 @@ class Terminal {
   }
 
   parse(c) {
+    computer.lineCount += 3;
     computer.display += "\n" + c + "\n";
     let cmd = c.split(" ");
     console.log(cmd);
@@ -35,8 +36,10 @@ class Terminal {
         break;
       case "cd":
         if (cmd.length > 3)
-          computer.display +=
-            "\nError using cd, only supply one [args], and it must be a folder";
+          {
+            computer.lineCount += 2;
+            computer.display +=
+            "\nError using cd, only supply one [args], and it must be a folder";}
         else this.cd(cmd[2]);
         break;
       case "ls":
@@ -47,14 +50,16 @@ class Terminal {
         break;
       case "cat":
         if (cmd.length > 3)
-          computer.display += "\nError using cat, only supply one [args]";
+          { computer.lineCount += 2;
+            computer.display += "\nError using cat, only supply one [args]";}
         else this.cat(cmd[2]);
         break;
       case "exit":
         this.exit();
         break;
       default:
-        computer.display += "\nNo such cmd found! :<\n";
+        { computer.lineCount += 3;
+          computer.display += "\nNo such cmd found! :<\n";}
         break;
     }
 
@@ -82,6 +87,7 @@ class Terminal {
 
       if (tutorialPassed) {
         // Switches popup msg when tutorial is passed
+        computer.lineCount += 1 + this.requiredData.tutorialCompleteMsg.split("\n").length;
         computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
         popup = new Popup(this.requiredData.tutorialCompleteMsg);
         game_win = true;
@@ -105,6 +111,7 @@ class Terminal {
                 tobeadded === "." ||
                 tobeadded === "./"
               ) {
+                computer.lineCount += 2;
                 computer.display += `${
                   currFileName.includes(".") ? "File" : "Folder"
                 } ${currFileName} is now tracked!\n`;
@@ -118,10 +125,12 @@ class Terminal {
         break;
       case "push":
         if (this.toPush.length === 0)
-          computer.display += "No files are tracked!\n";
+          {computer.lineCount += 2;
+            computer.display += "No files are tracked!\n";}
 
         if (this.commitMsg.length === 0)
-          computer.display += "There is no commit message attached\n";
+          { computer.lineCount += 2;
+            computer.display += "There is no commit message attached\n";}
 
         if (this.toPush.length === 0 || this.commitMsg.length === 0) return;
 
@@ -147,14 +156,17 @@ class Terminal {
         }
 
         if (correctSolutionCheck)
-          computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;
+          {computer.lineCount += 2;
+            computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;}
         else
-          computer.display += `Required files are not added to repo! Use "git stash" to start over! \n`;
+          {computer.lineCount += 2;
+            computer.display += `Required files are not added to repo! Use "git stash" to start over! \n`;}
         break;
       case "commit":
         if (this.toPush.length === 0) {
-          computer.display +=
-            "There is no files tracked to attach commit message to!\n";
+          {computer.lineCount += 2;
+            computer.display +=
+            "There is no files tracked to attach commit message to!\n";}
           return;
         }
 
@@ -162,15 +174,17 @@ class Terminal {
 
         if (commitMsg.length === 3) {
           this.commitMsg = commitMsg[1];
-          computer.display += `Files are tracked with commit message "${this.commitMsg}"\n`;
+          {computer.lineCount += 2;
+            computer.display += `Files are tracked with commit message "${this.commitMsg}"\n`;}
         } else
-          computer.display +=
-            "Error, be sure to encase commit message in double quotes\n";
+          {computer.lineCount += 2;
+            computer.display +=
+            "Error, be sure to encase commit message in double quotes\n";}
         break;
       case "ls-files":
         this.toPush.forEach((file) => {
           let currFileName = Object.keys(file)[0];
-
+          computer.lineCount += 2;
           computer.display += `${
             currFileName.includes(".") ? "File" : "Folder"
           } ${currFileName} is tracked!\n`;
@@ -182,20 +196,24 @@ class Terminal {
         break;
       case "clone":
         if (this.files.length > 0) {
+          computer.lineCount += 2;
           computer.display += "Already cloned :<\n";
           return;
         }
 
         if (cmd[3] !== this.url) {
+          computer.lineCount += 2;
           computer.display += "Wrong URL :<\n";
           return;
         }
 
         this.files = this.requiredData.filesRepo;
         this.currDir = this.requiredData.filesRepo;
+        computer.lineCount += 2;
         computer.display += `Files from given repo cloned! \n`;
         break;
       default:
+        computer.lineCount += 2;
         computer.display += "No such cmd found! :<\n";
         break;
     }
@@ -205,13 +223,14 @@ class Terminal {
     if (folder === "..") {
       // checks to see if currently at base directory
       if (directoryPath.length == 1) {
+        computer.lineCount += 2;
         computer.display += "You're already at the base directory\n";
         return;
       }
 
       // if cd refers to base dir, then set currDir to the files of base dir
       this.currDir = this.files;
-
+      computer.lineCount += 2;
       computer.display += "Back to base directory!\n";
       return;
     }
@@ -223,6 +242,7 @@ class Terminal {
         // does things to cd into new dir
         directoryPath = `/${folder}/`;
         newDir = curr[folder];
+        computer.lineCount += 2;
         computer.display += `Now at ${directoryPath}\n`;
       }
     });
@@ -232,12 +252,15 @@ class Terminal {
   cat(file) {
     console.log(file);
     if (!file.includes(".")) {
+      computer.lineCount += 3;
       computer.display += "\nUse cat on files, not directories!\n";
       return;
     }
     this.currDir.forEach((curr) => {
       let currFileName = Object.keys(curr)[0];
-      if (currFileName === file) computer.display += curr[currFileName];
+      if (currFileName === file) {
+        computer.lineCount += curr[currFileName].split("\n").length;
+        computer.display += curr[currFileName];}
     });
   }
 
@@ -245,6 +268,7 @@ class Terminal {
     console.log(files);
     files.forEach((file) => {
       let currFileName = Object.keys(file);
+      computer.lineCount += 2;
       computer.display += `${currFileName}\n`;
     });
   }
