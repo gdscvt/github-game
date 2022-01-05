@@ -11,6 +11,7 @@ let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
 let doors = [];
 let game_win = false;
 let key_table = undefined;
+const [START, INSTRUCTIONS, GAME] = [0, 1, 2];
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
@@ -76,41 +77,49 @@ function setup() {
 
 function draw() {
   background(220);
+
+  if(game.state == START){
+    game.drawStartScreen();
+  }
+  else if(game.state == INSTRUCTIONS){
+    game.drawInstructionsScreen();
+  }
+  else if(game.state == GAME){
+    for (obj of game.tiles){
+      obj.draw();
+    }
   
-  for (obj of game.tiles){
-    obj.draw();
-  }
-
-  for (obj of environment){
-    obj.draw();
-  }
-  game.doors.draw();
-
-  if(game_win){
-    game.doors.open();
-  }
-
-  player.draw();
-  if (frameCount - currFrameCount > 10) {
-    animIndex = floor(animIndex + 1) % frameSize;
-    currFrameCount = frameCount;
-  }
-
-  // If the computer is used
-  if (computerToggle) {
-    computer.draw();
-    computer.coding();
-    computer.onKeyPressed();
-    animIndex = 1;
-  } else {
-    player.onKeyPressed();
-  }
-  if (popupToggle) {
-    popup.draw();
-  }
-
-  for (obj of game.walls){
-    obj.draw();
+    for (obj of environment){
+      obj.draw();
+    }
+    game.doors.draw();
+  
+    if(game_win){
+      game.doors.open();
+    }
+  
+    player.draw();
+    if (frameCount - currFrameCount > 10) {
+      animIndex = floor(animIndex + 1) % frameSize;
+      currFrameCount = frameCount;
+    }
+  
+    // If the computer is used
+    if (computerToggle) {
+      computer.draw();
+      computer.coding();
+      computer.onKeyPressed();
+      animIndex = 1;
+    } else {
+      player.onKeyPressed();
+    }
+    if (popupToggle) {
+      popup.draw();
+    }
+  
+    for (obj of game.walls){
+      obj.draw();
+    }
   }
 
 }
