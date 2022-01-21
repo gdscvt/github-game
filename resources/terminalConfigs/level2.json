@@ -1,0 +1,11 @@
+[
+    {"filesRepo": [{"level2.sh": "lmao\n"}],
+    "files": [],
+    "url": "git.level2",
+"solution": [{"level2.sh": "lmao\n"}], 
+"tutorial": [],
+"tutorialCompleteMsg": "You've done it! \nHead to the door to the next level!\n",
+"levelCompleteMsg": "You've done it! \nHead to the door to the next level!\n",
+"popup": "Level 2: Go to the computer and Press C.\n\n\t\t\t\t\t\t\tTo open the door, CLONE the virus from the github repo git.level2.\n\n\t\t\t\t\t\t\tADD to it, then COMMIT -m a message, then push\n\nHint: . includes all files in directory"
+}
+]

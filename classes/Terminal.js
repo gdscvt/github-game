@@ -22,6 +22,9 @@ class Terminal {
     // TODO "repo" to push to
     this.toPush = [];
     this.commitMsg = "";
+
+    // for completing levels (not tutorials)
+    this.completed = false;
   }
 
   parse(c) {
@@ -35,12 +38,11 @@ class Terminal {
         this.git(c);
         break;
       case "cd":
-        if (cmd.length > 3)
-          {
-            computer.lineCount += 2;
-            computer.display +=
-            "\nError using cd, only supply one [args], and it must be a folder";}
-        else this.cd(cmd[2]);
+        if (cmd.length > 3) {
+          computer.lineCount += 2;
+          computer.display +=
+            "\nError using cd, only supply one [args], and it must be a folder";
+        } else this.cd(cmd[2]);
         break;
       case "ls":
         this.ls(this.currDir);
@@ -49,17 +51,19 @@ class Terminal {
         this.h(...cmd);
         break;
       case "cat":
-        if (cmd.length > 3)
-          { computer.lineCount += 2;
-            computer.display += "\nError using cat, only supply one [args]";}
-        else this.cat(cmd[2]);
+        if (cmd.length > 3) {
+          computer.lineCount += 2;
+          computer.display += "\nError using cat, only supply one [args]";
+        } else this.cat(cmd[2]);
         break;
       case "exit":
         this.exit();
         break;
       default:
-        { computer.lineCount += 3;
-          computer.display += "\nNo such cmd found! :<\n";}
+        {
+          computer.lineCount += 3;
+          computer.display += "\nNo such cmd found! :<\n";
+        }
         break;
     }
 
@@ -87,11 +91,20 @@ class Terminal {
 
       if (tutorialPassed) {
         // Switches popup msg when tutorial is passed
-        computer.lineCount += 1 + this.requiredData.tutorialCompleteMsg.split("\n").length;
-        computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
+        // computer.lineCount +=
+        //   1 + this.requiredData.tutorialCompleteMsg.split("\n").length;
+        // computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
         popup = new Popup(this.requiredData.tutorialCompleteMsg);
         game_win = true;
+        changeLvl = true;
       }
+    } else if (this.completed) {
+      console.log("completed!");
+      computer.lineCount +=
+        1 + this.requiredData.levelCompleteMsg.split("\n").length;
+      popup = new Popup(this.requiredData.levelCompleteMsg);
+      changeLvl = true;
+      game_win = true;
     }
   }
 
@@ -124,13 +137,15 @@ class Terminal {
         }
         break;
       case "push":
-        if (this.toPush.length === 0)
-          {computer.lineCount += 2;
-            computer.display += "No files are tracked!\n";}
+        if (this.toPush.length === 0) {
+          computer.lineCount += 2;
+          computer.display += "No files are tracked!\n";
+        }
 
-        if (this.commitMsg.length === 0)
-          { computer.lineCount += 2;
-            computer.display += "There is no commit message attached\n";}
+        if (this.commitMsg.length === 0) {
+          computer.lineCount += 2;
+          computer.display += "There is no commit message attached\n";
+        }
 
         if (this.toPush.length === 0 || this.commitMsg.length === 0) return;
 
@@ -155,18 +170,22 @@ class Terminal {
           return;
         }
 
-        if (correctSolutionCheck)
-          {computer.lineCount += 2;
-            computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;}
-        else
-          {computer.lineCount += 2;
-            computer.display += `Required files are not added to repo! Use "git stash" to start over! \n`;}
+        if (correctSolutionCheck) {
+          computer.lineCount += 2;
+          computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;
+          this.completed = true;
+        } else {
+          computer.lineCount += 2;
+          computer.display += `Required files are not added to repo! Use "git stash" to start over! \n`;
+        }
         break;
       case "commit":
         if (this.toPush.length === 0) {
-          {computer.lineCount += 2;
+          {
+            computer.lineCount += 2;
             computer.display +=
-            "There is no files tracked to attach commit message to!\n";}
+              "There is no files tracked to attach commit message to!\n";
+          }
           return;
         }
 
@@ -174,12 +193,15 @@ class Terminal {
 
         if (commitMsg.length === 3) {
           this.commitMsg = commitMsg[1];
-          {computer.lineCount += 2;
-            computer.display += `Files are tracked with commit message "${this.commitMsg}"\n`;}
-        } else
-          {computer.lineCount += 2;
-            computer.display +=
-            "Error, be sure to encase commit message in double quotes\n";}
+          {
+            computer.lineCount += 2;
+            computer.display += `Files are tracked with commit message "${this.commitMsg}"\n`;
+          }
+        } else {
+          computer.lineCount += 2;
+          computer.display +=
+            "Error, be sure to encase commit message in double quotes\n";
+        }
         break;
       case "ls-files":
         this.toPush.forEach((file) => {
@@ -260,7 +282,8 @@ class Terminal {
       let currFileName = Object.keys(curr)[0];
       if (currFileName === file) {
         computer.lineCount += curr[currFileName].split("\n").length;
-        computer.display += curr[currFileName];}
+        computer.display += curr[currFileName];
+      }
     });
   }
 
