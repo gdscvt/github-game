@@ -2,7 +2,7 @@ const [canvasWidth, canvasHeight] = [1000, 400];
 let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
-let [level1] = [undefined];
+let [currLvlIndex, level1, level2] = [1, undefined];
 let [game, environment, envCapture, env1Sprite] = [
   undefined,
   [],
@@ -31,6 +31,7 @@ let chair = undefined;
 let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
 let doors = [];
 let game_win = false;
+let changeLvl = false;
 let key_table = undefined;
 const [START, INSTRUCTIONS, GAME] = [0, 1, 2];
 
@@ -38,6 +39,7 @@ function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
   env1Sprite = loadImage("/resources/assets/env1Sprite.png");
   level1 = loadJSON("./resources/terminalConfigs/level1.json");
+  level2 = loadJSON("./resources/terminalConfigs/level2.json");
   doorSprite = loadImage("/resources/assets/doors.png");
 }
 
@@ -98,32 +100,30 @@ function setup() {
 function draw() {
   background(220);
 
-  if(game.state == START){
+  if (game.state == START) {
     game.drawStartScreen();
-  }
-  else if(game.state == INSTRUCTIONS){
+  } else if (game.state == INSTRUCTIONS) {
     game.drawInstructionsScreen();
-  }
-  else if(game.state == GAME){
-    for (obj of game.tiles){
+  } else if (game.state == GAME) {
+    for (obj of game.tiles) {
       obj.draw();
     }
-  
-    for (obj of environment){
+
+    for (obj of environment) {
       obj.draw();
     }
     game.doors.draw();
-  
-    if(game_win){
+
+    if (game_win) {
       game.doors.open();
     }
-  
+
     player.draw();
     if (frameCount - currFrameCount > 10) {
       animIndex = floor(animIndex + 1) % frameSize;
       currFrameCount = frameCount;
     }
-  
+
     // If the computer is used
     if (computerToggle) {
       computer.draw();
@@ -136,11 +136,24 @@ function draw() {
     if (popupToggle) {
       popup.draw();
     }
-  
-    for (obj of game.walls){
+
+    for (obj of game.walls) {
       obj.draw();
     }
   }
+
+  if (changeLvl) {
+    switch (currLvlIndex++) {
+      case 2:
+        computer.terminal = new Terminal(level2);
+        break;
+      default:
+        // change to end screen here
+        // computer.terminal = new Terminal(level2);
+        break;
+    }
+  }
+  changeLvl = false;
 }
 
 // Only activated, if the key is released
@@ -173,9 +186,9 @@ function keyReleased() {
     //     obj.height / 2 + 16 + 5
     //   )
     // ) {
-      if (!computerToggle) {
-        computerToggle = true;
-      }
+    if (!computerToggle) {
+      computerToggle = true;
+    }
     // }
   } else if (computerToggle) {
     if (keyCode == 8 && computer.code.length >= 3)
