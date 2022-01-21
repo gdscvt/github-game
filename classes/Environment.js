@@ -52,17 +52,12 @@ class Wall extends Environment{
 
 class Door{
     constructor(images, x, y, w, h){
-        this.images = images;
-        this.x = x;
-        this.y = y;
-        this.width = w;
-        this.height = h;
-        this.index = 0;
+        [this.images, this.x, this.y, this.width, this.height, this.index] = [images, x + w/2, y + h/2, w, h, 0];
     }
     draw(){
         push();
             let index = floor(this.index) % this.images.length;
-            image(this.images[index], this.x, this.y, this.width, this.height);
+            image(this.images[index], this.x - this.width/2, this.y - this.height/2, this.width, this.height);
         pop();
     }
 

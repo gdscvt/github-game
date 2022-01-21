@@ -33,7 +33,8 @@ let doors = [];
 let game_win = false;
 let changeLvl = false;
 let key_table = undefined;
-const [START, INSTRUCTIONS, GAME] = [0, 1, 2];
+let key_door = undefined;
+const [START, INSTRUCTIONS, GAME, GAMEOVER] = [0, 1, 2, 3];
 
 function preload() {
   playerSprite = loadImage("./assets/playerSprites.png");
@@ -104,10 +105,14 @@ function draw() {
     game.drawStartScreen();
   } else if (game.state == INSTRUCTIONS) {
     game.drawInstructionsScreen();
-  } else if (game.state == GAME) {
-    for (obj of game.tiles) {
+  }
+  else if(game.state == GAMEOVER){
+    game.drawEndScreen();
+  }
+  else if(game.state == GAME){
+    for (obj of game.tiles){
       obj.draw();
-    }
+    } 
 
     for (obj of environment) {
       obj.draw();
@@ -118,6 +123,21 @@ function draw() {
       game.doors.open();
     }
 
+    if(game_win 
+      && player.check_collision(
+          [player.x, player.y],
+          game.doors,
+          game.doors.width / 2 + 16 + 2,
+          game.doors.height / 2 + 16 + 2
+        )
+        ){
+          game_win = false;
+          computer.exit();
+          popupToggle = false;
+          player.reset(50, 100, 6);
+          // game.state = GAMEOVER;
+        }
+  
     player.draw();
     if (frameCount - currFrameCount > 10) {
       animIndex = floor(animIndex + 1) % frameSize;
@@ -148,6 +168,7 @@ function draw() {
         computer.terminal = new Terminal(level2);
         break;
       default:
+        game.state = GAMEOVER;
         // change to end screen here
         // computer.terminal = new Terminal(level2);
         break;

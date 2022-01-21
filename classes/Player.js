@@ -104,4 +104,10 @@ class Player {
       // theta[1] < canvasHeight - this.sizeY && 
       theta[1] > 0 ? theta[1] : this.y;
   }
+
+  reset(x, y, frame = 0){
+    this.x = x;
+    this.y = y;
+    this.frame = frame;
+  }
 }
