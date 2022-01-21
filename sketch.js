@@ -36,11 +36,11 @@ let key_table = undefined;
 const [START, INSTRUCTIONS, GAME] = [0, 1, 2];
 
 function preload() {
-  playerSprite = loadImage("/resources/playerSprites.png");
-  env1Sprite = loadImage("/resources/assets/env1Sprite.png");
-  level1 = loadJSON("./resources/terminalConfigs/level1.json");
-  level2 = loadJSON("./resources/terminalConfigs/level2.json");
-  doorSprite = loadImage("/resources/assets/doors.png");
+  playerSprite = loadImage("./assets/playerSprites.png");
+  env1Sprite = loadImage("./assets/env1Sprite.png");
+  level1 = loadJSON("./assets/terminalConfigs/level1.json");
+  level2 = loadJSON("./assets/terminalConfigs/level2.json");
+  doorSprite = loadImage("./assets/doors.png");
 }
 
 function setup() {
