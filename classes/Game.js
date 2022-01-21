@@ -123,6 +123,34 @@ Game.prototype.drawInstructionsScreen = function(){
     pop();
 }
 
+Game.prototype.drawEndScreen = function(){
+    push();
+        background(0);
+        fill(0);
+        stroke(255);
+        textAlign(CENTER);
+        [startX, startY, endX, endY] = [300, 250, 700, 300];
+
+        rect(startX, startY, endX - startX, endY - startY);
+
+        fill(0, 255, 0);
+        push(); noStroke();
+        text('Restart', startX, startY + (endY - startY)/2 - 5, endX - startX, endY - startY);
+
+        textSize(20); // Default is 12
+
+        [startX, startY, endX, endY] = [300, 50, 700, 300];
+
+        text('Game Won', startX, startY + (endY - startY)/2 - 5, endX - startX, endY - startY);
+        pop();
+        if(mouseX < endX && mouseX > startX && mouseY < endY && mouseY > startY){
+            backPressed = true;
+        }else{
+            backPressed = false;
+        }
+    pop();
+}
+
 
 function mousePressed(){
 

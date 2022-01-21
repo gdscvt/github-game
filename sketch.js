@@ -32,7 +32,8 @@ let [cabinet1, cabinet2, cabinet3] = [undefined, undefined, undefined];
 let doors = [];
 let game_win = false;
 let key_table = undefined;
-const [START, INSTRUCTIONS, GAME] = [0, 1, 2];
+let key_door = undefined;
+const [START, INSTRUCTIONS, GAME, GAMEOVER] = [0, 1, 2, 3];
 
 function preload() {
   playerSprite = loadImage("/resources/playerSprites.png");
@@ -104,6 +105,9 @@ function draw() {
   else if(game.state == INSTRUCTIONS){
     game.drawInstructionsScreen();
   }
+  else if(game.state == GAMEOVER){
+    game.drawEndScreen();
+  }
   else if(game.state == GAME){
     for (obj of game.tiles){
       obj.draw();
@@ -117,6 +121,21 @@ function draw() {
     if(game_win){
       game.doors.open();
     }
+
+    if(game_win 
+      && player.check_collision(
+          [player.x, player.y],
+          game.doors,
+          game.doors.width / 2 + 16 + 2,
+          game.doors.height / 2 + 16 + 2
+        )
+        ){
+          game_win = false;
+          computer.exit();
+          popupToggle = false;
+          player.reset(50, 100, 6);
+          game.state = GAMEOVER;
+        }
   
     player.draw();
     if (frameCount - currFrameCount > 10) {
