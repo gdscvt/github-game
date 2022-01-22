@@ -123,6 +123,8 @@ function draw() {
       game.doors.open();
     }
 
+    // Checks if the player has won the current level and 
+    // walks to the door
     if(game_win 
       && player.check_collision(
           [player.x, player.y],
@@ -132,7 +134,8 @@ function draw() {
         )
         ){
           game_win = false;
-          computer.exit();
+          changeLvl = true;
+          computer.terminal.exit();
           popupToggle = false;
           player.reset(50, 100, 6);
           // game.state = GAMEOVER;
@@ -163,7 +166,8 @@ function draw() {
   }
 
   if (changeLvl) {
-    switch (currLvlIndex++) {
+    currLvlIndex++;
+    switch (currLvlIndex) {
       case 2:
         computer.terminal = new Terminal(level2);
         break;
@@ -173,8 +177,8 @@ function draw() {
         // computer.terminal = new Terminal(level2);
         break;
     }
+    changeLvl = false;
   }
-  changeLvl = false;
 }
 
 // Only activated, if the key is released

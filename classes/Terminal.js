@@ -32,7 +32,7 @@ class Terminal {
     computer.display += "\n" + c + "\n";
     let cmd = c.split(" ");
     console.log(cmd);
-
+// TODO: Add the winning condition check
     switch (cmd[1]) {
       case "git":
         this.git(c);
@@ -74,6 +74,7 @@ class Terminal {
     let tutorialPassed = true;
 
     // TODO needs more work for levels later, and different checks
+    // Checks if the current level is tutorial
     if (this.tutorial !== undefined) {
       console.log("Here??\n");
       this.tutorial.forEach((file) => {
@@ -86,6 +87,7 @@ class Terminal {
           if (!containsCurrentFile) tutorialPassed = false;
         }
 
+        // Edge case: No files contained
         if (this.files.length === 0) tutorialPassed = false;
       });
 
@@ -96,14 +98,14 @@ class Terminal {
         // computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
         popup = new Popup(this.requiredData.tutorialCompleteMsg);
         game_win = true;
-        changeLvl = true;
+        // changeLvl = true;
       }
     } else if (this.completed) {
       console.log("completed!");
       computer.lineCount +=
         1 + this.requiredData.levelCompleteMsg.split("\n").length;
       popup = new Popup(this.requiredData.levelCompleteMsg);
-      changeLvl = true;
+      // changeLvl = true;
       game_win = true;
     }
   }
