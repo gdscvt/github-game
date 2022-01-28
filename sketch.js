@@ -2,7 +2,7 @@ const [canvasWidth, canvasHeight] = [1000, 400];
 let [player, playerSprite, playerCapture] = [undefined, undefined, {}];
 let [frameSize, currFrameCount, animIndex] = [6, 0, 0];
 let [computerToggle, computer] = [false, undefined];
-let [currLvlIndex, level1, level2] = [1, undefined];
+let [currLvlIndex, level1, level2] = [1, undefined, undefined];
 let [game, environment, envCapture, env1Sprite] = [
   undefined,
   [],
@@ -105,14 +105,12 @@ function draw() {
     game.drawStartScreen();
   } else if (game.state == INSTRUCTIONS) {
     game.drawInstructionsScreen();
-  }
-  else if(game.state == GAMEOVER){
+  } else if (game.state == GAMEOVER) {
     game.drawEndScreen();
-  }
-  else if(game.state == GAME){
-    for (obj of game.tiles){
+  } else if (game.state == GAME) {
+    for (obj of game.tiles) {
       obj.draw();
-    } 
+    }
 
     for (obj of environment) {
       obj.draw();
@@ -123,24 +121,25 @@ function draw() {
       game.doors.open();
     }
 
-    // Checks if the player has won the current level and 
+    // Checks if the player has won the current level and
     // walks to the door
-    if(game_win 
-      && player.check_collision(
-          [player.x, player.y],
-          game.doors,
-          game.doors.width / 2 + 16 + 2,
-          game.doors.height / 2 + 16 + 2
-        )
-        ){
-          game_win = false;
-          changeLvl = true;
-          computer.terminal.exit();
-          popupToggle = false;
-          player.reset(50, 100, 6);
-          // game.state = GAMEOVER;
-        }
-  
+    if (
+      game_win &&
+      player.check_collision(
+        [player.x, player.y],
+        game.doors,
+        game.doors.width / 2 + 16 + 2,
+        game.doors.height / 2 + 16 + 2
+      )
+    ) {
+      game_win = false;
+      changeLvl = true;
+      computer.terminal.exit();
+      popupToggle = false;
+      player.reset(50, 100, 6);
+      // game.state = GAMEOVER;
+    }
+
     player.draw();
     if (frameCount - currFrameCount > 10) {
       animIndex = floor(animIndex + 1) % frameSize;
@@ -172,6 +171,7 @@ function draw() {
         computer.terminal = new Terminal(level2);
         break;
       default:
+        console.log("lmao");
         game.state = GAMEOVER;
         // change to end screen here
         // computer.terminal = new Terminal(level2);
