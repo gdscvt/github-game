@@ -11,6 +11,9 @@ class Level {
   popup; // String, hints on how to win curr level
   constructor(data) {
     Object.assign(this, data);
+    this.walls = [];
+    this.tiles = [];
+    this.doors = undefined;
   }
 
   draw() {}
