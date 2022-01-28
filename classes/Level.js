@@ -1,6 +1,8 @@
 class Level{
     constructor(){
-
+        this.walls = [];
+        this.tiles = [];
+        this.doors = undefined;
     }
 
     draw(){

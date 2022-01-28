@@ -23,9 +23,8 @@ function Game() {
     "wt t t t t t t t t t t t t t t t t t t t t t t t w",
     "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
   ];
-  this.walls = [];
-  this.tiles = [];
-  this.doors = undefined;
+  
+  this.level = undefined;
   this.state = 0;
 }
 
