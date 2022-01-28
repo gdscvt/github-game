@@ -32,8 +32,8 @@ function Game() {
 
 Game.prototype.setLevel = function(level) {
   
-  // this.computer.terminal = new Terminal(level);
-  this.level = new Level(level);
+  // computer.terminal = new Terminal(level);
+  this.level = new Level(level, this.computer);
 }
 
 Game.prototype.drawGameScreen = function() {

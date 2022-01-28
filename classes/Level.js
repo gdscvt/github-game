@@ -9,7 +9,7 @@ class Level {
   tutorial; // Boolean, true if tutorial else a normal level
   tutorialCompleteMsg; // String, popup msg when win
   popup; // String, hints on how to win curr level
-  
+
   constructor(data) {
     Object.assign(this, data);
     this.walls = [];
@@ -17,13 +17,25 @@ class Level {
     this.doors = undefined;
 
     this.setupProps();
+    this.cmdHistory = [];
+    computer.terminal = new Terminal({
+      filesRepo: this.filesRepo,
+      files: this.files,
+      url: this.url,
+      tutorial: this.tutorial,
+      tutorialCompleteMsg: this.tutorialCompleteMsg,
+      popup: this.popup,
+      cmdHistory: this.cmdHistory,
+    });
   }
 
-  draw() {}
+  draw() {
+    if (this.winningCondition(this.cmdHistory)) game_win = true;
+  }
 
   setupProps() {
-    this.initTilemap(this.tilemap);
-    this.initTilemap(this.objectTilemap);
+    this.initTilemap(this.tileMap);
+    // this.initTilemap(this.objectTilemap);
   }
 
   initTilemap(map) {

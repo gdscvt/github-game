@@ -1,22 +1,30 @@
 // "filesRepo": [{"instructions.txt": "UP\nUP\nRIGHT\n"}, {"testing": [{"instructions2.txt":"RIGHT\n"}]}],
 class Terminal {
+  // requiredData contains tha translated json file into json object
+  // files contains the array of files from the dataJson
+  // url contains the url of the folder from the dataJson
+  // currDir contains the files of the current directory; will change
+  // when cd is used and stuff
+  requiredData;
+  tutorial;
+  solution;
+  files;
+  url;
+  popup;
+  cmdHistory;
   constructor(dataJson) {
-    // requiredData contains tha translated json file into json object
-    this.requiredData = dataJson[0];
+    Object.assign(this, dataJson);
+    // this.requiredData = dataJson[0];
 
-    if (dataJson[0].solution.length === 0) {
-      this.tutorial = dataJson[0].tutorial;
-    }
-    this.solution = dataJson[0].solution;
+    // if (dataJson[0].solution.length === 0) {
+    //   this.tutorial = dataJson[0].tutorial;
+    // }
+    // this.solution = dataJson[0].solution;
 
-    // files contains the array of files from the dataJson
-    // url contains the url of the folder from the dataJson
-    // currDir contains the files of the current directory; will change
-    // when cd is used and stuff
-    this.files = [];
-    this.url = dataJson[0].url;
+    // this.files = [];
+    // this.url = dataJson[0].url;
     this.currDir = [];
-    this.popup = dataJson[0].popup;
+    // this.popup = dataJson[0].popup;
     popup = new Popup(this.popup);
 
     // TODO "repo" to push to
@@ -32,7 +40,7 @@ class Terminal {
     computer.display += "\n" + c + "\n";
     let cmd = c.split(" ");
     console.log(cmd);
-// TODO: Add the winning condition check
+    // TODO: Add the winning condition check
     switch (cmd[1]) {
       case "git":
         this.git(c);
@@ -70,46 +78,46 @@ class Terminal {
     computer.code = "> ";
 
     // Only goes here if this is a tutorial level
+    // Deprecated for new winningCondition check in Level.js
 
-    let tutorialPassed = true;
+    //   let tutorialPassed = true;
 
-    // TODO needs more work for levels later, and different checks
-    // Checks if the current level is tutorial
-    if (this.tutorial !== undefined) {
-      console.log("Here??\n");
-      this.tutorial.forEach((file) => {
-        console.log(file);
-        let currFileName = Object.keys(file)[0];
-        let containsCurrentFile = false;
-        for (let i = 0; i < this.files.length; i++) {
-          let currFileNameRepo = Object.keys(this.tutorial[i])[0];
-          if (currFileName === currFileNameRepo) containsCurrentFile = true;
-          if (!containsCurrentFile) tutorialPassed = false;
-        }
+    //   // TODO needs more work for levels later, and different checks
+    //   // Checks if the current level is tutorial
+    //   if (this.tutorial !== undefined) {
+    //     console.log("Here??\n");
+    //     this.tutorial.forEach((file) => {
+    //       console.log(file);
+    //       let currFileName = Object.keys(file)[0];
+    //       let containsCurrentFile = false;
+    //       for (let i = 0; i < this.files.length; i++) {
+    //         let currFileNameRepo = Object.keys(this.tutorial[i])[0];
+    //         if (currFileName === currFileNameRepo) containsCurrentFile = true;
+    //         if (!containsCurrentFile) tutorialPassed = false;
+    //       }
 
-        // Edge case: No files contained
-        if (this.files.length === 0) tutorialPassed = false;
-      });
+    //       // Edge case: No files contained
+    //       if (this.files.length === 0) tutorialPassed = false;
+    //     });
 
-      if (tutorialPassed) {
-        // Switches popup msg when tutorial is passed
-        // computer.lineCount +=
-        //   1 + this.requiredData.tutorialCompleteMsg.split("\n").length;
-        // computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
-        popup = new Popup(this.requiredData.tutorialCompleteMsg);
-        game_win = true;
-        // changeLvl = true;
-      }
-    } else if (this.completed) {
-      console.log("completed!");
-      computer.lineCount +=
-        1 + this.requiredData.levelCompleteMsg.split("\n").length;
-      popup = new Popup(this.requiredData.levelCompleteMsg);
-      // changeLvl = true;
-      game_win = true;
-    }
+    //     if (tutorialPassed) {
+    //       // Switches popup msg when tutorial is passed
+    //       // computer.lineCount +=
+    //       //   1 + this.requiredData.tutorialCompleteMsg.split("\n").length;
+    //       // computer.display += "\n" + this.requiredData.tutorialCompleteMsg;
+    //       popup = new Popup(this.requiredData.tutorialCompleteMsg);
+    //       game_win = true;
+    //       // changeLvl = true;
+    //     }
+    //   } else if (this.completed) {
+    //     console.log("completed!");
+    //     computer.lineCount +=
+    //       1 + this.requiredData.levelCompleteMsg.split("\n").length;
+    //     popup = new Popup(this.requiredData.levelCompleteMsg);
+    //     // changeLvl = true;
+    //     game_win = true;
+    //   }
   }
-
   git(c) {
     let cmd = c.split(" ");
     console.log(cmd);
@@ -151,36 +159,40 @@ class Terminal {
 
         if (this.toPush.length === 0 || this.commitMsg.length === 0) return;
 
-        // does check to see if repo is the same as the given answers
-        let correctSolutionCheck = true;
-        console.log(this.toPush);
-        console.log(this.solution);
-        if (this.toPush.length !== this.solution.length)
-          correctSolutionCheck = false;
-        this.toPush.forEach((file) => {
-          let currFileName = Object.keys(file)[0];
-          let containsCurrentFile = false;
-          for (let i = 0; i < this.solution.length; i++) {
-            let currFileNameRepo = Object.keys(this.solution[i])[0];
-            if (currFileName === currFileNameRepo) containsCurrentFile = true;
-          }
+        computer.lineCount += 2;
+        computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;
 
-          if (!containsCurrentFile) correctSolutionCheck = false;
-        });
+      // Deprecated for winningCondition function check
+      // does check to see if repo is the same as the given answers
+      // let correctSolutionCheck = true;
+      // console.log(this.toPush);
+      // console.log(this.solution);
+      // if (this.toPush.length !== this.solution.length)
+      //   correctSolutionCheck = false;
+      // this.toPush.forEach((file) => {
+      //   let currFileName = Object.keys(file)[0];
+      //   let containsCurrentFile = false;
+      //   for (let i = 0; i < this.solution.length; i++) {
+      //     let currFileNameRepo = Object.keys(this.solution[i])[0];
+      //     if (currFileName === currFileNameRepo) containsCurrentFile = true;
+      //   }
 
-        if (this.tutorial !== undefined) {
-          return;
-        }
+      //   if (!containsCurrentFile) correctSolutionCheck = false;
+      // });
 
-        if (correctSolutionCheck) {
-          computer.lineCount += 2;
-          computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;
-          this.completed = true;
-        } else {
-          computer.lineCount += 2;
-          computer.display += `Required files are not added to repo! Use "git stash" to start over! \n`;
-        }
-        break;
+      // if (this.tutorial !== undefined) {
+      //   return;
+      // }
+
+      // if (correctSolutionCheck) {
+      //   computer.lineCount += 2;
+      //   computer.display += `Files tracked are pushed with commit message "${this.commitMsg}"!\n`;
+      //   this.completed = true;
+      // } else {
+      //   computer.lineCount += 2;
+      //   computer.display += `Required files are not added to repo! Use "git stash" to start over! \n`;
+      // }
+      // break;
       case "commit":
         if (this.toPush.length === 0) {
           {
@@ -217,6 +229,7 @@ class Terminal {
       case "stash":
         this.toPush = [];
         this.commitMsg = "";
+        this.cmdHistory = [];
         break;
       case "clone":
         if (this.files.length > 0) {
