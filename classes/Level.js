@@ -14,6 +14,15 @@ class Level {
     this.walls = [];
     this.tiles = [];
     this.doors = undefined;
+    this.cmdHistory = [];
+    computer.terminal = new Terminal({
+      filesRepo: this.filesRepo,
+      files: this.files,
+      url: this.url,
+      tutorial: this.tutorial,
+      tutorialCompleteMsg: this.tutorialCompleteMsg,
+      popup: this.popup,
+    });
   }
 
   draw() {}
