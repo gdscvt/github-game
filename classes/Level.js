@@ -22,10 +22,13 @@ class Level {
       tutorial: this.tutorial,
       tutorialCompleteMsg: this.tutorialCompleteMsg,
       popup: this.popup,
+      cmdHistory: this.cmdHistory,
     });
   }
 
-  draw() {}
+  draw() {
+    if (this.winningCondition(this.cmdHistory)) game_win = true;
+  }
 
   setupProps() {
     this.initTilemap(this.tilemap);

@@ -1,7 +1,30 @@
 const lvl1 = {
   terminalLevel: true,
   winningConditions() {},
-  tileMap: [],
+  tileMap: [
+    [
+      "wwwwwwwwwwwwwwwwwwwwwwwwdwwwwwwwwwwwwwwwwwwwwwwwww",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wt t t t t t t t t t t t t t t t t t t t t t t t w",
+      "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ],
+  ],
   objectTileMap: [],
   filesRepo: [
     {
