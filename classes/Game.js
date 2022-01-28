@@ -1,31 +1,13 @@
 let [startPressed, instPressed, backPressed] = [false, false, false];
 
 function Game() {
-  this.tilemap = [
-    "wwwwwwwwwwwwwwwwwwwwwwwwdwwwwwwwwwwwwwwwwwwwwwwwww",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wt t t t t t t t t t t t t t t t t t t t t t t t w",
-    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-  ];
   
   this.level = undefined;
   this.state = 0;
+  this.player = new Player(playerCapture, 50, 100, 6);
+  this.computer = new Computer(600, 0);
+  this.setLevel(lvl1);
+  [this.frameSize, this.currFrameCount, this.animIndex] = [6, 0, 0];
 }
 
 // Game.prototype.initTilemap = function () {
@@ -48,117 +30,137 @@ function Game() {
 //   }
 // };
 
-Game.prototype.drawStartScreen = function () {
-  push();
+Game.prototype.setLevel = function(level) {
+  
+  // this.computer.terminal = new Terminal(level);
+  this.level = new Level(level);
+}
 
-  background(0);
-  fill(0);
-  stroke(255);
-  let [startX, startY, endX, endY] = [300, 150, 700, 200];
+Game.prototype.drawGameScreen = function() {
 
-  rect(startX, startY, endX - startX, endY - startY);
-  fill(0, 255, 0);
-  textAlign(CENTER);
-  push();
-  noStroke();
-  text(
-    "Start",
-    startX,
-    startY + (endY - startY) / 2 - 5,
-    endX - startX,
-    endY - startY
-  );
-  pop();
-
-  if (mouseX < endX && mouseX > startX && mouseY < endY && mouseY > startY) {
-    startPressed = true;
-  } else {
-    startPressed = false;
+  // Draws the tiles
+  for (obj of this.level.tiles) {
+    obj.draw();
   }
 
-  fill(0);
-  [startX, startY, endX, endY] = [300, 250, 700, 300];
-
-  rect(startX, startY, endX - startX, endY - startY);
-
-  fill(0, 255, 0);
-  push();
-  noStroke();
-  text(
-    "Instructions",
-    startX,
-    startY + (endY - startY) / 2 - 5,
-    endX - startX,
-    endY - startY
-  );
-  pop();
-  if (mouseX < endX && mouseX > startX && mouseY < endY && mouseY > startY) {
-    instPressed = true;
-  } else {
-    instPressed = false;
+  // Draws the environment objects
+  for (obj of environment) {
+    obj.draw();
   }
 
-  pop();
-};
+  // Draw the doors
+  this.level.doors.draw();
 
-Game.prototype.drawInstructionsScreen = function () {
-  push();
-
-  background(0);
-  fill(0);
-  stroke(255);
-  let [startX, startY, endX, endY] = [10, 10, 70, 50];
-
-  rect(startX, startY, endX - startX, endY - startY);
-
-  fill(0, 255, 0);
-  noStroke();
-  push();
-  textAlign(CENTER);
-  text(
-    "Return",
-    startX,
-    startY + (endY - startY) / 2 - 5,
-    endX - startX,
-    endY - startY
-  );
-  pop();
-
-  if (mouseX < endX && mouseX > startX && mouseY < endY && mouseY > startY) {
-    backPressed = true;
-  } else {
-    backPressed = false;
+  // Draws the open when the game is won
+  if (game_win) {
+    this.level.doors.open();
   }
 
-  [startX, startY, endX, endY] = [100, 50, 500, 100];
-  let interval = 40;
+  // Draws the player
+  this.player.draw();
 
-  // textAlign(LEFT);
+  // Draws the walls
+  for (obj of this.level.walls) {
+    obj.draw();
+  }
 
-  text(
-    "1. Use W-A-S-D keys to move up-left-down-right.",
-    startX,
-    startY + (endY - startY) / 2 - 5,
-    endX - startX,
-    endY - startY
-  );
-  text(
-    "2. Use C to access the terminal when close to a computer.",
-    startX,
-    startY + (endY - startY) / 2 - 5 + interval,
-    endX - startX,
-    endY - startY
-  );
-  text(
-    "3. Use H to access the hint screen.",
-    startX,
-    startY + (endY - startY) / 2 - 5 + interval * 2,
-    endX - startX,
-    endY - startY
-  );
+  // Checks if the player has won the current level and
+  // walks to the door
+  if (
+    game_win &&
+    this.player.check_collision(
+      [this.player.x, this.player.y],
+      this.level.doors,
+      this.level.doors.width / 2 + 16 + 2,
+      this.level.doors.height / 2 + 16 + 2
+    )
+  ) {
+    game_win = false;
+    changeLvl = true;
+    this.computer.terminal.exit();
+    popupToggle = false;
+    this.player.reset(50, 100, 6);
+    // game.state = GAMEOVER;
+  }
 
-  pop();
-};
+  if (frameCount - this.currFrameCount > 10) {
+    this.animIndex = floor(this.animIndex + 1) % this.frameSize;
+    this.currFrameCount = frameCount;
+  }
+
+  // If the computer is used
+  if (computerToggle) {
+    this.computer.draw();
+    this.computer.coding();
+    this.computer.onKeyPressed();
+    this.animIndex = 1;
+  } else {
+    this.player.onKeyPressed();
+  }
+
+  if (popupToggle) {
+    popup.draw();
+  }
+
+  if (changeLvl) {
+    currLvlIndex++;
+    switch (currLvlIndex) {
+      case 2:
+        this.setLevel(level2);
+        break;
+      default:
+        console.log("lmao");
+        game.state = GAMEOVER;
+        // change to end screen here
+        // computer.terminal = new Terminal(level2);
+        break;
+    }
+    changeLvl = false;
+  }
+}
+
+// Only activated, if the key is released
+function keyReleased() {
+  let currKey;
+  if (keycodeMap[keyCode]) {
+    currKey = capitalize
+      ? keycodeMap[keyCode].toUpperCase()
+      : keycodeMap[keyCode];
+  }
+
+  if (!popupToggle && (currKey === "h" || currKey === "H") && !computerToggle) {
+    console.log("Hint message wanted!");
+    popupToggle = !popupToggle;
+  } else if (
+    popupToggle &&
+    !computerToggle &&
+    (currKey === "h" || currKey === "H")
+  ) {
+    popupToggle = !popupToggle;
+  }
+
+  if (!computerToggle && (currKey === "c" || currKey === "C")) {
+    let obj = environment[key_table];
+    // if (
+    //   player.check_collision(
+    //     [player.x, player.y],
+    //     obj,
+    //     obj.width / 2 + 16 + 5,
+    //     obj.height / 2 + 16 + 5
+    //   )
+    // ) {
+    if (!computerToggle) {
+      computerToggle = true;
+    }
+    // }
+  } else if (computerToggle) {
+    if (keyCode == 8 && this.computer.code.length >= 3)
+      this.computer.code = this.computer.code.slice(0, -1);
+    else if (keyCode == 13) this.computer.terminal.parse(this.computer.code);
+    else if (keyCode === 20) capitalize = !capitalize;
+    else if (currKey !== undefined) this.computer.code += currKey;
+  }
+}
 
 function mousePressed() {
   if (startPressed) {

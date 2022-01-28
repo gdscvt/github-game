@@ -9,11 +9,14 @@ class Level {
   tutorial; // Boolean, true if tutorial else a normal level
   tutorialCompleteMsg; // String, popup msg when win
   popup; // String, hints on how to win curr level
+  
   constructor(data) {
     Object.assign(this, data);
     this.walls = [];
     this.tiles = [];
     this.doors = undefined;
+
+    this.setupProps();
   }
 
   draw() {}
